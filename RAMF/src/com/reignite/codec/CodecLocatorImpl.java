@@ -19,6 +19,20 @@ import com.reignite.messaging.MessagingProxyRegistry;
 import com.reignite.messaging.amf.AMFMessage;
 
 /**
+ * This file is part of r-amf.
+ * 
+ * r-amf is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License.
+ * 
+ * r-amf is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * r-amf. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Created by Surrey Hughes of Reignite Pty Ltd <http://www.reignite.com.au>
  * Locates serializer and deserializer by inspecting the input stream to
  * determine the version of amf being used.
  * 
@@ -48,7 +62,7 @@ public class CodecLocatorImpl implements CodecLocator {
 			worker.setInputStream(di);
 			worker.setAliasRegistry(aliasRegistry);
 			worker.setProxyRegistry(proxyRegistry);
-			
+
 			deserializer = new AMFMessageDeserializer(worker);
 		} catch (Exception e) {
 			LogWriter.error(getClass(), "Failed to create deserializer: " + e, e);
@@ -74,7 +88,7 @@ public class CodecLocatorImpl implements CodecLocator {
 		} catch (Exception e) {
 			LogWriter.error(getClass(), "Failed to create serializer: " + e, e);
 		}
-		
+
 		return serializer;
 	}
 
@@ -86,7 +100,8 @@ public class CodecLocatorImpl implements CodecLocator {
 	}
 
 	/**
-	 * @param serializeWorkers the serializeWorkers to set
+	 * @param serializeWorkers
+	 *            the serializeWorkers to set
 	 */
 	public void setSerializeWorkers(Map<Integer, Class<SerializeWorker>> serializeWorkers) {
 		this.serializeWorkers = serializeWorkers;
@@ -100,7 +115,8 @@ public class CodecLocatorImpl implements CodecLocator {
 	}
 
 	/**
-	 * @param deserializeWorkers the deserializeWorkers to set
+	 * @param deserializeWorkers
+	 *            the deserializeWorkers to set
 	 */
 	public void setDeserializeWorkers(Map<Integer, Class<DeserializeWorker>> deserializeWorkers) {
 		this.deserializeWorkers = deserializeWorkers;
@@ -114,7 +130,8 @@ public class CodecLocatorImpl implements CodecLocator {
 	}
 
 	/**
-	 * @param proxyRegistry the proxyRegistry to set
+	 * @param proxyRegistry
+	 *            the proxyRegistry to set
 	 */
 	public void setProxyRegistry(MessagingProxyRegistry proxyRegistry) {
 		this.proxyRegistry = proxyRegistry;
@@ -128,7 +145,8 @@ public class CodecLocatorImpl implements CodecLocator {
 	}
 
 	/**
-	 * @param aliasRegistry the aliasRegistry to set
+	 * @param aliasRegistry
+	 *            the aliasRegistry to set
 	 */
 	public void setAliasRegistry(MessagingAliasRegistry aliasRegistry) {
 		this.aliasRegistry = aliasRegistry;

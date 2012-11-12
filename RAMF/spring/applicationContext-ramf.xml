@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+	<bean id="ramfServer" class="com.reignite.messaging.server.RAMFServer">
+		<property name="endpointLocator" ref="endpointLocator" />
+		<property name="codecLocator" ref="codecLocator" />
+		<property name="errorVersion" value="0" />
+	</bean>
+
+	<bean id="endpointLocator" class="com.reignite.messaging.server.WebEndpointLocator">
+		<property name="endpointMap">
+			<util:map>
+				<entry key="/broker/amf" value-ref="endpoint" />
+			</util:map>
+		</property>
+	</bean>
+
+	<bean id="codecLocator" class="com.reignite.codec.CodecLocatorImpl">
+		<property name="serializeWorkers">
+			<util:map>
+				<entry key="0" value="com.reignite.codec.amf.AMF3SerializeWorker" />
+				<entry key="3" value="com.reignite.codec.amf.AMF3SerializeWorker" />
+			</util:map>
+		</property>
+		<property name="deserializeWorkers">
+			<util:map>
+				<entry key="0" value="com.reignite.codec.amf.AMF3DeserializeWorker" />
+				<entry key="3" value="com.reignite.codec.amf.AMF3DeserializeWorker" />
+			</util:map>
+		</property>
+		<property name="aliasRegistry">
+			<bean class="com.reignite.messaging.MessagingAliasRegistry" />
+		</property>
+		<property name="proxyRegistry">
+			<bean class="com.reignite.messaging.MessagingProxyRegistry">
+				<property name="typeEditor" ref="delegatingTypeEditor">
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="delegatingTypeEditor" class="com.reignite.messaging.proxy.DelegatingTypeEditor" />
+
+	<bean id="endpoint" class="com.reignite.messaging.server.AMFEndpoint">
+		<constructor-arg ref="ramfServer" />
+		<property name="destinationMap">
+			<util:map>
+				<entry key="securityService" value-ref="securityDestination" />
+			</util:map>
+		</property>
+	</bean>
+
+	<bean id="securityDestination" class="com.reignite.messaging.server.SpringInitializedDestination">
+		<property name="name" value="securityService" />
+		<property name="target" ref="securityService" />
+		<property name="typeEditor" ref="delegatingTypeEditor" />
+	</bean>
+</beans>

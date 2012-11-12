@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<project name="RAMF" default="jar" basedir=".">
+
+	<target name="jar" description="ramf-0.1.jar" depends="createStructure">
+		<jar destfile="${dir.build}/ramf-0.1.jar">
+			<zipfileset dir="./bin" includes="**/*.class" />
+		</jar>
+	</target>
+
+	<target name="createStructure">
+		<property name="dir.build" value="./build" />
+		<mkdir dir="${dir.build}" />
+	</target>
+</project>
+
